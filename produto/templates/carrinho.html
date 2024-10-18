@@ -1,0 +1,66 @@
+{% load filtros %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Carrinho de Compras</title>
+    <!-- Incluindo o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6 mt-8">
+        <!-- Tabela de produtos -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead class="bg-gray-800 text-white">
+                    <tr>
+                        <th class="px-4 py-2 text-left">Imagem</th>
+                        <th class="px-4 py-2 text-left">Produto</th>
+                        <th class="px-4 py-2 text-left">Quantidade</th>
+                        <th class="px-4 py-2 text-left">Sub total</th>
+                        <th class="px-4 py-2 text-left">Remover</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    {% for j, i in dados|enumerate %}
+                    <tr class="border-t">
+                        <td class="px-4 py-4">
+                            <img src="{{ i.imagem }}" class="w-16 h-16 object-cover rounded">
+                        </td>
+                        <td class="px-4 py-4">{{ i.nome }}</td>
+                        <td class="px-4 py-4">{{ i.quantidade }}</td>
+                        <td class="px-4 py-4">R${{ i.preco }}0</td>
+                        <td class="px-4 py-4">
+                            <a href="{% url 'remover_carrinho' j %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                                Remover
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Informações de frete e total -->
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold text-gray-700">Frete: R${{ frete }}0</h3>
+            <div class="flex items-baseline">
+                <h1 class="text-2xl font-bold text-gray-800 mr-2">Total:</h1>
+                <h2 class="text-xl text-gray-600">R${{ total }}0</h2>
+            </div>
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="mt-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+            <a href="{% url 'finalizar_pedido' %}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-center">
+                Finalizar compra
+            </a>
+            <a href="{% url 'home' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-center">
+                Continuar comprando
+            </a>
+        </div>
+    </div>
+</body>
+</html>

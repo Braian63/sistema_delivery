@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'produto/css/output.css' %}">
+    <title>Gula Gula Hamburgueria - O melhor Hambúrguer da região</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
+        <div class="w-full h-full flex flex-col justify-center items-center">
+            <img src="./assets/hamb-1.png" alt="Logo DevBurguer" class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200">
+            <h1 class="text-4xl mt-4 mb-2 font-bold text-white">Gula Gula Hamburgueria</h1>
+            <span class="text-white font-medium"> Rua João Ulisses Freitas, nº252, Bairro São Cristóvão, Floriano - PI </span>
+            <div class="bg-green-600 px-4 py-1 rounded-lg mt-5" id="date-span">
+                <span class="text-white font-medium">Dom a Dom - 18:00 às 00:00</span>
+            </div>
+        </div>
+    </header>
+    <!-- FIM DO HEADER -->
+
+    <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6"> Conheça nosso menu</h2>
+
+    <!-- INÍCIO MENU -->
+    <div id="menu" class="mb-16">
+        {% for categoria in categorias %}
+            <div class="mx-auto max-w-7xl px-2 my-2">
+                <h2 class="font-bold text-3xl">{{categoria.categoria}}</h2>
+            </div>
+            <main class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 my-2">
+                <!-- PRODUTO ITEM -->
+                {% for produto in categoria.produto_set.all %}
+                <div class="flex gap-2 w-full">
+                    <!-- Envolva a imagem com um link para a página de detalhes -->
+                    <a href="{% url 'produto_detail' produto.id %}">
+                        <img src="{{ produto.img.url }}" alt="{{ produto.nome_produto }}" class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300">
+                    </a>
+                    <div class="w-full">
+                        <p class="font-bold">{{ produto.nome_produto }}</p>
+                        <p class="text-sm">{{ produto.descricao }}</p>
+                        <div class="flex items-center gap-2 justify-between mt-3">
+                            <p class="font-bold text-lg">R${{ produto.preco }}</p>
+                            <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="{{ produto.nome_produto }}" data-price="{{ produto.preco }}">
+                                <i class="fa fa-cart-plus text-lg text-white"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- FIM PRODUTO ITEM -->
+            </main>
+                
+            
+        {% endfor %}
+    </div>
+    <!-- FIM MENU -->
+
+
+    <!-- BUTTON - FOOTER -->
+    <footer class="w-full bg-red-500 py-2 fixed bottom-0 z-40 flex items-center justify-center">
+        <a href="{% url 'ver_carrinho' %}" class="flex items-center gap-2 text-white font-bold">
+            (<span id="cart-count">0</span>) Ver meu carrinho
+            <i class="fa fa-cart-plus text-lg text-white"></i>
+        </a>
+    </footer>
+    <!-- FIM DO FOOTER -->
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="{% static 'produto/js/script.js' %}"></script>
+
+
+</body>
+</html>

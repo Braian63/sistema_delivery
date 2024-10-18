@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Produto - Detalhes</title>
+    <!-- Incluindo o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
+        <!-- Exibe a mensagem de erro se houver -->
+        {% if erro == '1' %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+            <strong class="font-bold">Erro:</strong>
+            <span class="block sm:inline">Confira a quantidade de adicionais selecionados.</span>
+        </div>
+        {% endif %}
+
+        <!-- Seção principal: Imagem do produto e detalhes -->
+        <div class="flex flex-col md:flex-row items-start space-y-6 md:space-y-0 md:space-x-8">
+            <!-- Imagem do produto -->
+            <div class="w-full md:w-1/3">
+                <img class="w-full rounded-lg object-cover" src="/media/{{ produto.img }}" alt="Imagem do Produto">
+            </div>
+
+            <!-- Detalhes do produto -->
+            <div class="w-full md:w-2/3">
+                <!-- Nome do produto -->
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">{{ produto.nome_produto }}</h3>
+                <hr class="border-gray-300">
+
+                <!-- Descrição do produto -->
+                <div class="mt-4">
+                    <h1 class="text-xl font-semibold text-gray-700">Descrição:</h1>
+                    <p class="text-gray-600 leading-relaxed">{{ produto.descricao }}</p>
+                </div>
+
+                <!-- Ingredientes -->
+                <div class="mt-4">
+                    <h1 class="text-xl font-semibold text-gray-700">Ingredientes:</h1>
+                    <p class="text-gray-600 leading-relaxed">{{ produto.ingredientes }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Escolha de adicionais -->
+        <div class="mt-8">
+            <h1 class="text-xl font-semibold text-gray-700">Escolha seus adicionais:</h1>
+            <form method="POST" action="{% url 'add_carrinho' %}">
+                {% csrf_token %}
+                <input name="id" type="hidden" value="{{ produto.id }}">
+
+                <!-- Loop pelos adicionais -->
+                {% for i in produto.adicionais.all %}
+                <div class="mt-6">
+                    <h5 class="text-lg font-medium">{{ i }}</h5>
+                    <p class="text-gray-600">Escolha no mínimo {{ i.minimo }} e no máximo {{ i.maximo }} {{ i }}</p>
+
+                    <div class="flex flex-wrap justify-start">
+                        {% for j in i.opcoes.all %}
+                        {% if j.ativo %}
+                        <div class="flex items-center mr-4 mb-2">
+                            <input type="checkbox" name="{{ i }}" value="{{ j.id }}" class="mr-2">
+                            <label class="text-gray-700">{{ j }} + R${{ j.acrecimo }}</label>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Observações -->
+                <div class="mt-6">
+                    <h1 class="text-xl font-semibold text-gray-700">Observações:</h1>
+                    <textarea name="observacoes" class="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300" placeholder="Digite suas observações" rows="3"></textarea>
+                </div>
+
+                <!-- Quantidade -->
+                <div class="mt-6">
+                    <h1 class="text-xl font-semibold text-gray-700">Quantidade:</h1>
+                    <input name="quantidade" type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300" min="1" max="200" value="1">
+                </div>
+
+                <!-- Preço -->
+                <div class="mt-6">
+                    <h1 class="text-xl font-semibold text-gray-700">Preço:</h1>
+                    <h3 class="text-2xl text-gray-800">R${{ produto.preco }} por unidade</h3>
+                </div>
+
+                <!-- Botão de adicionar ao carrinho -->
+                <button type="submit" class="mt-8 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300">Adicionar ao carrinho</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
