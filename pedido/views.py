@@ -4,6 +4,9 @@ from django.http import HttpResponse
 from .models import Pedido, ItemPedido, CupomDesconto, HistoricoPedido
 from produto.models import Produto, Categoria
 import json
+from django.utils.http import urlencode
+
+
 def finalizar_pedido(request):  
     if request.method == "GET":
         categorias = Categoria.objects.all()
@@ -69,10 +72,21 @@ def finalizar_pedido(request):
                 ) for v in listaCarrinho
             )
 
-            request.session['carrinho'] = []  # Limpar o carrinho corretamente
+            mensagem = (
+                f"🍔 Olá, me chamo {x.get('nome', '')} e gostaria de fazer um pedido!\n"
+                f"🛒 Itens do pedido: {', '.join([f'{item['quantidade']}x {item['produto'].nome_produto}' for item in listaCarrinho])}\n"
+                f"📍 Endereço de entrega: {x.get('numero', '')}, {x.get('bairro', '')}\n"
+                f"🏍 Taxa de entrega: R$ 5,00\n"
+                f"🧾 Total: R$ {total:.2f}"
+            )
+            numero = x.get('telefone', '')
+            whatsapp_url = f"https://wa.me/{numero}?{urlencode({'text': mensagem})}"
+
+
+            request.session['carrinho'] = []  
             request.session.save()
 
-            return render(request, 'pedido_realizado.html')
+            return render(request, 'pedido_realizado.html', {'whatsapp_url': whatsapp_url})
         else:
             return redirect('/pedidos/finalizar_pedido?erro=1')
 

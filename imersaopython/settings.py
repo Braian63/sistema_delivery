@@ -141,11 +141,11 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Meu Site",
     "welcome_sign": "Bem-vindo ao painel administrativo!",
     "copyright": "Meu Site © 2024",
-    "search_model": "auth.User",
+    "search_model": "produto.Produto", #colocar a logo
     "user_avatar": "uploads/avatar.png",
     "topmenu_links": [
         {"name": "Home", "url": "/", "new_window": False},
-        {"name": "Docs", "url": "https://django-jazzmin.readthedocs.io/en/latest/", "new_window": True},
+        {"name": "Meu site", "url": "home", "new_window": True},
     ],
     "show_sidebar": True,
     "navigation_expanded": True,
