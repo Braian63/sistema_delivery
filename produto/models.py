@@ -13,6 +13,9 @@ class Opcoes(models.Model):
     nome = models.CharField(max_length=100)
     acrecimo = models.FloatField(default=0)
     ativo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "Opções"
     def __str__(self):
         return self.nome
 
@@ -22,6 +25,9 @@ class Adicional(models.Model):
     minimo = models.IntegerField()
     opcoes = models.ManyToManyField(Opcoes)
     ativo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "Adicionais"
     def __str__(self):
         return self.nome
 

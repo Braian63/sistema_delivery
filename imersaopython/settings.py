@@ -50,8 +50,8 @@ ROOT_URLCONF = 'imersaopython.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / 'templates'],  # Caso você tenha templates globais
+        'APP_DIRS': True,  # Isso permite que o Django busque templates em cada app
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

@@ -8,6 +8,9 @@ class CupomDesconto(models.Model):
     usos = models.IntegerField(default=0)
     ativo = models.BooleanField(default=True)
 
+    class Meta:
+        verbose_name_plural = "Cupons de Desconto"
+
     def __str__(self):
         return self.codigo
 

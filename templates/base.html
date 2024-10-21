@@ -14,18 +14,23 @@
     <title>Gula Gula Hamburgueria - O melhor Hambúrguer da região</title>
 </head>
 <body>
-    <!-- HEADER -->
-    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
-        <div class="w-full h-full flex flex-col justify-center items-center">
-            <img src="./assets/hamb-1.png" alt="Logo DevBurguer" class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200">
-            <h1 class="text-4xl mt-4 mb-2 font-bold text-white">Gula Gula Hamburgueria</h1>
-            <span class="text-white font-medium"> Rua João Ulisses Freitas, nº252, Bairro São Cristóvão, Floriano - PI </span>
-            <div class="bg-green-600 px-4 py-1 rounded-lg mt-5" id="date-span">
-                <span class="text-white font-medium">Dom a Dom - 18:00 às 00:00</span>
-            </div>
+<!-- HEADER -->
+<header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
+    <div class="w-full h-full flex flex-col justify-center items-center">
+        <img src="{{ lanchonete.logo.url }}" alt="Logo da Lanchonete" class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200">
+        <h1 class="text-4xl mt-4 mb-2 font-bold text-white">{{ lanchonete.nome }}</h1>
+        <span class="text-white font-medium"> {{ lanchonete.endereco }} </span>
+        
+        <div class="bg-green-600 px-4 py-1 rounded-lg mt-5" id="date-span">
+            {% if horario_inicio and horario_fim %}
+                <span class="text-white font-medium">Horário de hoje: {{ horario_inicio }} - {{ horario_fim }}</span>
+            {% else %}
+                <span class="text-white font-medium">Fechado hoje</span>
+            {% endif %}
         </div>
-    </header>
-    <!-- FIM DO HEADER -->
+    </div>
+</header>
+<!-- FIM DO HEADER -->
 
     <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6"> Conheça nosso menu</h2>
 

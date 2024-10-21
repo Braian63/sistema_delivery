@@ -65,6 +65,14 @@
             }
         });
     }
+    function dinheiro(select) {
+        var troco = document.getElementById('troco');
+        if (select.value == "1") { // Valor 1 corresponde à opção "Dinheiro"
+            troco.style.display = "block";
+        } else {
+            troco.style.display = "none";
+        }
+    }
     </script>
 </head>
 <body class="bg-gray-100 p-5">
@@ -78,7 +86,11 @@
         Escolha ao menos um produto antes de efetuar a compra!
     </div>
     {% endif %}
-
+    {% if erro == '2' %}
+    <div class="bg-red-500 text-white p-4 mb-4 rounded">
+        O valor do troco deve ser maior que o total do pedido.
+    </div>
+    {% endif %}
     <form method="post" action="{% url 'finalizar_pedido' %}" class="bg-white p-6 rounded shadow">
         {% csrf_token %}
         <div class="mb-4">
@@ -88,7 +100,7 @@
 
         <div class="mb-4">
             <label class="block text-lg text-gray-700">CEP:</label>
-            <input type="text" class="border rounded w-full p-2" id="cep" placeholder="CEP" name="cep">
+            <input type="text" class="border rounded w-full p-2" id="cep" placeholder="Ex: 64860-092" name="cep">
         </div>
 
         <div class="mb-4">
@@ -124,10 +136,6 @@
             <input type="text" required class="border rounded w-full p-2" placeholder="Telefone" name="telefone">
         </div>
 
-        <div class="flex justify-between mb-4">
-            <div class="btn bg-blue-500 text-white py-2 px-4 rounded" onclick="pagar_entrega()">Pagar na entrega</div>
-        </div>
-
         <hr class="my-4">
         <h1 id="total" class="text-xl">Total: R${{total}}0</h1>
 
@@ -148,7 +156,7 @@
             {% comment %} deixar dinamico {% endcomment %}
             <div id="troco" class="mt-4">  
                 <label class="block text-lg text-gray-700">Troco para*:</label>
-                <input type="text" class="border rounded w-full p-2" placeholder="Número" name="troco_para">
+                <input type="number" class="border rounded w-full p-2" min="{{total}}" placeholder="Número" name="troco_para">
             </div>
         </div>
         <button type="submit" class="bg-green-500 text-white py-2 px-4 mt-4 rounded">Efetuar pedido!</button>
