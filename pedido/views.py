@@ -78,14 +78,22 @@ def finalizar_pedido(request):
                 ) for v in listaCarrinho
             )
 
+            taxa_entrega  = 5
             mensagem = (
-                f"🍔 Olá, me chamo {x.get('nome', '')} e gostaria de fazer um pedido!\n"
-                f"🛒 Itens do pedido: {', '.join([f'{item['quantidade']}x {item['produto'].nome_produto}' for item in listaCarrinho])}\n"
-                f"📍 Endereço de entrega: {x.get('rua', '')}, {x.get('numero', '')}, {x.get('bairro', '')}\n"
-                f"🏍 Taxa de entrega: R$ 5,00\n"
-                f"🧾 Total: R$ {total:.2f}"
+                f"🍔 *Olá, me chamo {x.get('nome', '')} e gostaria de fazer um pedido!*\n\n"
+                f"🛒 *Itens do pedido:*\n"
+                + "\n".join([f"    - {item['quantidade']}x _{item['produto'].nome_produto}_ (R$ {item['preco']:.2f})" for item in listaCarrinho]) +
+                f"\n\n🧾 *Subtotal:* R$ {total:.2f}\n"
+                f"🏍 *Taxa de entrega:* R$ 5,00\n"
+                f"🧾 *Total:* R$ {total + taxa_entrega:.2f}\n\n"
+                f"📍 *Endereço de entrega:*\n"
+                f"    Rua: {x.get('rua', '')}, Nº: {x.get('numero', '')}\n"
+                f"    Bairro: {x.get('bairro', '')}, Ponto de referência: {x.get('ponto_referencia', '')}\n\n"
+                f"💳 *Forma de pagamento:* {x.get('meio_pagamento', '')}\n"
+                f"💵 *Troco para:* R$ {x.get('troco_para', '') if x.get('troco_para') else 'Sem troco'}\n\n"
+                f"🕒 Agradecemos seu pedido! Ele será preparado e entregue em breve. 😊"
             )
-            numero = x.get('telefone', '')
+            numero = +5589994200241
             whatsapp_url = f"https://wa.me/{numero}?{urlencode({'text': mensagem})}"
 
 
